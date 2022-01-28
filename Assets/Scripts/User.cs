@@ -5,8 +5,7 @@ using UnityEngine;
 
 public class User : MonoBehaviour
 {
-    // Camera
-    public Camera Camera;
+    public Transform Camera;
     public Vector3 cameraOffset;
 
     private RealtimeView RealtimeView;
@@ -19,12 +18,18 @@ public class User : MonoBehaviour
 
     private void Update()
     {
-        if (RealtimeView.isOwnedLocallySelf)
+        if(Camera != null)
         {
-            CalculateTargetMovement();
+            transform.position = Camera.transform.position;
+            transform.rotation = Camera.transform.rotation;
         }
+        //if (RealtimeView.isOwnedLocallySelf)
+        //{
+        //    CalculateTargetMovement();
+        //}
     }
 
+    // only for testing purposes on PC
     private void CalculateTargetMovement()
     {
         Vector3 inputMovement = new Vector3();
@@ -33,12 +38,12 @@ public class User : MonoBehaviour
         transform.position += inputMovement * Time.deltaTime;
     }
 
-    private void LateUpdate()
-    {
-        if (RealtimeView.isOwnedLocallySelf)
-        {
-            Camera.transform.position = transform.position + cameraOffset;
-            Camera.transform.LookAt(transform.position);
-        }
-    }
+    //private void LateUpdate()
+    //{
+    //    if (Camera != null && RealtimeView.isOwnedLocallySelf)
+    //    {
+    //        Camera.transform.position = transform.position + cameraOffset;
+    //        Camera.transform.LookAt(transform.position);
+    //    }
+    //}
 }
