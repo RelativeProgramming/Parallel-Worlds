@@ -1,0 +1,49 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 848409ee8ba454f42a5ddff137688a27, type: 3}
+  m_Name: ReferenceImageLibrary
+  m_EditorClassIdentifier: 
+  m_GuidLow: 5743049021230716674
+  m_GuidHigh: 5456539882560225966
+  m_DataStore:
+    m_Storage: []
+  m_Images:
+  - m_SerializedGuid:
+      m_GuidLow: 5637004198198437073
+      m_GuidHigh: 5803145008718935463
+    m_SerializedTextureGuid:
+      m_GuidLow: 2626917840258821263
+      m_GuidHigh: 16396049181080550697
+    m_Size: {x: 0.1, y: 0.1}
+    m_SpecifySize: 1
+    m_Name: TrackingPoint1
+    m_Texture: {fileID: 2800000, guid: 92c36c8fafdb247429fd2336dc778ae3, type: 3}
+  - m_SerializedGuid:
+      m_GuidLow: 4719748182007363704
+      m_GuidHigh: 1334902949775043466
+    m_SerializedTextureGuid:
+      m_GuidLow: 8652658802204910862
+      m_GuidHigh: 13327145024597355178
+    m_Size: {x: 0.1, y: 0.1}
+    m_SpecifySize: 1
+    m_Name: TrackingPoint2
+    m_Texture: {fileID: 2800000, guid: 3c14a50e6b567814aa6a3d25ca87f3b8, type: 3}
+  - m_SerializedGuid:
+      m_GuidLow: 5336257440714361808
+      m_GuidHigh: 6744607931111003053
+    m_SerializedTextureGuid:
+      m_GuidLow: 2009782355471505426
+      m_GuidHigh: 3705764288792118472
+    m_Size: {x: 0.1, y: 0.1}
+    m_SpecifySize: 1
+    m_Name: TrackingPoint3
+    m_Texture: {fileID: 2800000, guid: 6dba18122e671be4c844c896fc846d33, type: 3}
