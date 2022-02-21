@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<QCARInfo xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="QCAR_Dataset_info.xsd">
+    <TargetSet version="3.4">
+        <AreaTarget version="5.0" bbox="-14.0707 -1.5092 -6.3062 34.1107 16.1156 43.9263" targetId="bc1a2d4b5bef452ea24afab321a35679" name="VuforiaAPBSub9" pathAuthoring="bc1a2d4b5bef452ea24afab321a35679_authoring.3dt" pathOcclusion="bc1a2d4b5bef452ea24afab321a35679_occlusion.3dt" pathNavMesh="bc1a2d4b5bef452ea24afab321a35679_navmesh.glb" />
+    </TargetSet>
+</QCARInfo>
