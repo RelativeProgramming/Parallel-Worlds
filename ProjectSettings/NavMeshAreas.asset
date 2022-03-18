@@ -74,8 +74,8 @@ NavMeshProjectSettings:
   - serializedVersion: 2
     agentTypeID: 0
     agentRadius: 0.3416279
-    agentHeight: 0.2414237
-    agentSlope: 45
+    agentHeight: 0.39
+    agentSlope: 3.3
     agentClimb: 0.1
     ledgeDropHeight: 0
     maxJumpAcrossDistance: 0
@@ -90,4 +90,4 @@ NavMeshProjectSettings:
     debug:
       m_Flags: 0
   m_SettingNames:
-  - AI
+  - Roaming Agent

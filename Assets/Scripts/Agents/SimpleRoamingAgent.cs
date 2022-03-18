@@ -4,11 +4,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-namespace Assets.Scripts.Agent
+namespace Assets.Scripts.Agents
 {
 
     [RequireComponent(typeof(NavMeshAgent))]
-    public class RoamingAgent : MonoBehaviour
+    public class SimpleRoamingAgent : MonoBehaviour
     {
         private NavMeshAgent Agent;
         private RealtimeView RealtimeView;
