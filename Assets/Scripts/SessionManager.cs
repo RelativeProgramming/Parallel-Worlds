@@ -42,9 +42,11 @@ public class SessionManager : MonoBehaviour
             var options = Realtime.InstantiateOptions.defaults;
             options.useInstance = _realtime;
             GameObject userGameObject = Realtime.Instantiate(prefabName: "User", options: options);
+            userGameObject.GetComponent<MeshRenderer>().enabled = false;
 
             RealtimeTransform userTransform = userGameObject.GetComponent<RealtimeTransform>();
             userTransform.RequestOwnership();
+            
 
             User = userGameObject.GetComponent<User>();
 

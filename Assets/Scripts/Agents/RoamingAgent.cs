@@ -12,6 +12,7 @@ namespace Assets.Scripts.Agents
     {
         private NavMeshAgent Agent;
         private RealtimeView RealtimeView;
+        private Simulation Simulation;
 
         private RaycastHit[] Hits = new RaycastHit[1];
 
@@ -23,9 +24,10 @@ namespace Assets.Scripts.Agents
 
         private void Start()
         {
+            Simulation = transform.parent.GetComponent<Simulation>();
             if (RealtimeView.isOwnedLocallySelf)
             {
-                StartCoroutine(Wander());
+                StartCoroutine(ActionLoop());
             }
         }
 
@@ -33,6 +35,7 @@ namespace Assets.Scripts.Agents
         {
             if (RealtimeView.isOwnedLocallySelf)
             {
+                // Command Agent to move to certain position
                 //if (Input.GetKeyUp(KeyCode.Mouse0))
                 //{
                 //    Ray ray = ServerCamera.Instance.ScreenPointToRay(Input.mousePosition);
@@ -72,29 +75,53 @@ namespace Assets.Scripts.Agents
 
         public float UpdateRate = 0.1f;
         public Vector3 Destination = Vector3.zero;
-        private IEnumerator Wander()
+        private IEnumerator ActionLoop()
         {
-            WaitForSeconds Wait = new WaitForSeconds(UpdateRate * Random.Range(0.5f, 1.5f));
-
             while (true)
             {
                 if (!Agent.enabled || !Agent.isOnNavMesh)
                 {
-                    yield return Wait;
+                    yield return new WaitForSeconds(1f);
                 }
-                else if (Agent.remainingDistance <= Agent.stoppingDistance)
+                else
                 {
-                    Vector2 point = Random.insideUnitCircle * 3;
-                    NavMeshHit hit;
-
-                    if (NavMesh.SamplePosition(Agent.transform.position + new Vector3(point.x, 0, point.y), out hit, 2f, Agent.areaMask))
+                    GameObject food = Simulation.getClosestFoodWithinReach(transform.position, 5f);
+                    if (food != null)
                     {
-                        Destination = hit.position;
-                        Destination.y = transform.position.y;
-                    }
-                }
+                        // Food is in proximity
+                        var foodPos = food.transform.position;
+                        if (Vector3.Distance(transform.position, foodPos) < 0.3)
+                        {
+                            // Consume Food when close
+                            Simulation.DestroyFoodItem(food);
+                            yield return new WaitForSeconds(Random.Range(1f, 3f));
+                        }
+                        else
+                        {
+                            // Walk towards food
+                            NavMeshHit hit;
+                            if (NavMesh.SamplePosition(new Vector3(foodPos.x, 0, foodPos.z), out hit, 2f, Agent.areaMask))
+                            {
+                                Destination = hit.position;
+                                Destination.y = transform.position.y;
+                            }
+                        }
+                    } 
+                    else if (Agent.remainingDistance <= Agent.stoppingDistance)
+                    {
+                        // Wander
+                        Vector2 point = Random.insideUnitCircle * 3;
+                        NavMeshHit hit;
 
-                yield return Wait;
+                        if (NavMesh.SamplePosition(Agent.transform.position + new Vector3(point.x, 0, point.y), out hit, 2f, Agent.areaMask))
+                        {
+                            Destination = hit.position;
+                            Destination.y = transform.position.y;
+                        }
+                    }
+
+                    yield return new WaitForSeconds(UpdateRate * Random.Range(0.5f, 1.5f));
+                }
             }
         }
     }
