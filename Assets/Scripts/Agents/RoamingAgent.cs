@@ -24,9 +24,9 @@ namespace Assets.Scripts.Agents
 
         private void Start()
         {
-            Simulation = transform.parent.GetComponent<Simulation>();
             if (RealtimeView.isOwnedLocallySelf)
             {
+                Simulation = GameObject.FindObjectOfType<Simulation>();
                 StartCoroutine(ActionLoop());
             }
         }

@@ -9,10 +9,16 @@ public class User : MonoBehaviour
     public Vector3 cameraOffset;
 
     private RealtimeView RealtimeView;
+    private SessionManager SessionManager;
 
     private void Awake()
     {
         RealtimeView = GetComponent<RealtimeView>();
+    }
+
+    private void Start()
+    {
+        SessionManager = SessionManager.Instance;
     }
 
 
@@ -27,6 +33,23 @@ public class User : MonoBehaviour
         //{
         //    CalculateTargetMovement();
         //}
+    }
+
+    public void ThrowFood()
+    {
+        var sim = GameObject.FindObjectOfType<Simulation>();
+        if(sim != null)
+        {
+            GameObject acorn = SessionManager.InstantiateRealtimePrefab("Acorn");
+            acorn.transform.position = transform.position;
+            acorn.transform.Rotate(new Vector3(Random.Range(1f, 89f), 0, 0));
+            acorn.GetComponent<Rigidbody>().velocity = transform.rotation * Vector3.forward * 5;
+            acorn.GetComponent<FoodItem>().Creator = SessionManager.Realtime.clientID.ToString();
+        } else
+        {
+            Debug.Log("No simulation object found!");
+        }
+        
     }
 
     // only for testing purposes on PC

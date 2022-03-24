@@ -13,7 +13,9 @@ public class WorldCalibration : MonoBehaviour
     public XRReferenceImageLibrary referenceImageLibrary;
 
     public Button btnCalibrate;
-    public Text btnCalibrateText;
+    public Image btnCalibrateImage;
+    public Sprite btnCalibrateSprite;
+    public Sprite btnRecalibrateSprite;
     public Text debugInfoText;
 
     private ARTrackedImageManager trackedImageManager;
@@ -28,6 +30,16 @@ public class WorldCalibration : MonoBehaviour
     private void Awake()
     {
         trackedImageManager = arSessionOrigin.GetComponent(typeof(ARTrackedImageManager)) as ARTrackedImageManager;
+        Application.logMessageReceived += HandleLog;
+    }
+
+    private void HandleLog(string message, string stackTrace, LogType type)
+    {
+        debugInfoText.text += message + "\n" + stackTrace + "\n";
+        if(debugInfoText.text.Split("\n").Length > 20)
+        {
+            debugInfoText.text = debugInfoText.text.Substring(debugInfoText.text.IndexOf("\n") + 1);
+        }
     }
 
     void Start()
@@ -65,21 +77,21 @@ public class WorldCalibration : MonoBehaviour
 
     private void Update()
     {
-        debugInfoText.text = "Origin Position: " + arSessionOrigin.transform.position.ToString() + "\nOrigin Rotation: " + arSessionOrigin.transform.rotation.ToString();
+        //debugInfoText.text = "Origin Position: " + arSessionOrigin.transform.position.ToString() + "\nOrigin Rotation: " + arSessionOrigin.transform.rotation.ToString();
 
         if (lastImageUpdated != null && lastTrackedPositions.ContainsKey(lastImageUpdated))
         {
-            debugInfoText.text += "\nLast Updated Image: " + lastImageUpdated;
-            debugInfoText.text += "\nLast Position: " + lastTrackedPositions[lastImageUpdated].ToString() + "\nLast Rotation: " + lastTrackedRotations[lastImageUpdated].ToString();
+            //debugInfoText.text += "\nLast Updated Image: " + lastImageUpdated;
+            //debugInfoText.text += "\nLast Position: " + lastTrackedPositions[lastImageUpdated].ToString() + "\nLast Rotation: " + lastTrackedRotations[lastImageUpdated].ToString();
         }
 
         if (calibrated)
         {
-            btnCalibrateText.text = "Recalibrate?";
+            btnCalibrateImage.sprite = btnRecalibrateSprite;
         }
         else
         {
-            btnCalibrateText.text = "Calibrate";
+            btnCalibrateImage.sprite = btnCalibrateSprite;
         }
 
     }

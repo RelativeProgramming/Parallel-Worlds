@@ -8,7 +8,7 @@ using UnityEngine.AI;
 
 public class Simulation : MonoBehaviour
 {
-    public Realtime Realtime;
+    private SessionManager SessionManager;
 
     private RealtimeView RealtimeView;
 
@@ -21,18 +21,19 @@ public class Simulation : MonoBehaviour
 
     private void Start()
     {
+        SessionManager = SessionManager.Instance;
         if(RealtimeView.isOwnedLocallySelf)
         {
             //InstantiateRealtimePrefab("Origin Rock");
-            
-            InstantiateRealtimePrefab("FoyerAPBNavMesh");
-            InstantiateRealtimePrefab("FoyerAPBCollider");
-            SpawnAreaManager = InstantiateRealtimePrefab("FoyerAPBSpawnAreas").GetComponent<SpawnAreaManager>();
+
+            SessionManager.InstantiateRealtimePrefab("FoyerAPBNavMesh");
+            SessionManager.InstantiateRealtimePrefab("FoyerAPBCollider");
+            SpawnAreaManager = SessionManager.InstantiateRealtimePrefab("FoyerAPBSpawnAreas").GetComponent<SpawnAreaManager>();
             
 
             for (int i = 0; i < 3; i++)
             {
-                var go = InstantiateRealtimePrefab("Roaming Agent");
+                var go = SessionManager.InstantiateRealtimePrefab("Roaming Agent");
                 RoamingAgent agent = go.GetComponent<RoamingAgent>();
                 agent.transform.position = new Vector3(-0.5f + i * 0.5f, 0.6f, -4);
                 agent.UpdateRate = Random.Range(1f, 4f);
@@ -51,23 +52,10 @@ public class Simulation : MonoBehaviour
             // Simulation Update Code
             if(Input.GetMouseButtonDown(0))
             {
-                GameObject acorn = InstantiateRealtimePrefab("Acorn");
+                GameObject acorn = SessionManager.InstantiateRealtimePrefab("Acorn");
                 acorn.transform.position = new Vector3(0, 1, 0);
             }
         }
-    }
-    public GameObject InstantiateRealtimePrefab(string prefabName, Transform parent = null)
-    {
-        var options = Realtime.InstantiateOptions.defaults;
-        options.useInstance = Realtime;
-
-        var go = Realtime.Instantiate(prefabName: prefabName, options: options);
-
-        RealtimeTransform goTransform = go.GetComponent<RealtimeTransform>();
-        goTransform.RequestOwnership();
-
-        go.transform.SetParent(parent == null ? transform : parent);
-        return go;
     }
 
     public void DestroyRealtimeObject(GameObject go)
@@ -78,7 +66,7 @@ public class Simulation : MonoBehaviour
     }
 
 
-    private List<GameObject> FoodObjects = new List<GameObject>();
+    private List<GameObject> GeneratedFoodObjects = new List<GameObject>();
     private IEnumerator SpawnFood()
     {
         while(true)
@@ -87,10 +75,10 @@ public class Simulation : MonoBehaviour
             WaitForSeconds Wait = new WaitForSeconds(Random.Range(1f, 2f));
 
             // Delete oldest acorn if object limit is reached
-            if (FoodObjects.Count >= 150)
+            if (GeneratedFoodObjects.Count >= 20)
             {
-                DestroyRealtimeObject(FoodObjects[0]);
-                FoodObjects.RemoveAt(0);
+                DestroyRealtimeObject(GeneratedFoodObjects[0]);
+                GeneratedFoodObjects.RemoveAt(0);
             }
 
             // Add new Acorn
@@ -103,10 +91,10 @@ public class Simulation : MonoBehaviour
             if (Physics.Raycast(pos, transform.TransformDirection(Vector3.down), out hit, Mathf.Infinity, layerMask))
             {
                 // It hit -> spawn Food
-                GameObject acorn = InstantiateRealtimePrefab("Acorn");
+                GameObject acorn = SessionManager.InstantiateRealtimePrefab("Acorn");
                 acorn.transform.position = pos;
                 acorn.transform.Rotate(new Vector3(Random.Range(1f, 89f), 0, 0));
-                FoodObjects.Add(acorn);
+                GeneratedFoodObjects.Add(acorn);
             }
 
             yield return Wait;
@@ -116,15 +104,18 @@ public class Simulation : MonoBehaviour
     public void DestroyFoodItem(GameObject food)
     {
         DestroyRealtimeObject(food);
-        FoodObjects.Remove(food);
+        GeneratedFoodObjects.Remove(food);
     }
 
     public GameObject getClosestFoodWithinReach(Vector3 pos, float range)
     {
         GameObject result = null;
         float closestDistance = float.PositiveInfinity;
-        foreach(GameObject go in FoodObjects)
+        var foodItems = GameObject.FindObjectsOfType<FoodItem>();
+
+        foreach(FoodItem fi in foodItems)
         {
+            GameObject go = fi.gameObject;
             float dist = Vector3.Distance(pos, go.transform.position);
             if (dist < range && dist < closestDistance)
             {

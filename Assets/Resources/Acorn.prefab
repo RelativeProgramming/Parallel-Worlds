@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 7563194762942431777}
   - component: {fileID: 5889128690818230260}
   - component: {fileID: 1173694328645860466}
+  - component: {fileID: 2554108953659448964}
   m_Layer: 0
   m_Name: Acorn
   m_TagString: Untagged
@@ -118,7 +119,7 @@ Rigidbody:
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 0
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
 --- !u!114 &5889128690818230260
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -160,3 +161,16 @@ MonoBehaviour:
   _syncScale: 1
   _syncVelocity: 1
   _maintainOwnershipWhileSleeping: 0
+--- !u!114 &2554108953659448964
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7452483178156206068}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fafea2f96e2dcfc4aaa8a93e076107fc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Creator: 
