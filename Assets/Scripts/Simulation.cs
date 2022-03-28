@@ -1,4 +1,3 @@
-using Assets.Scripts.Agents;
 using Normal.Realtime;
 using System.Collections;
 using System.Collections.Generic;
@@ -6,7 +5,7 @@ using Unity.AI.Navigation;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class Simulation : MonoBehaviour
+public class Simulation : MonoBehaviour // RealtimeComponent<SimulationModel>
 {
     private SessionManager SessionManager;
 
@@ -58,6 +57,8 @@ public class Simulation : MonoBehaviour
         }
     }
 
+    
+
     public void DestroyRealtimeObject(GameObject go)
     {
         RealtimeTransform goTransform = go.GetComponent<RealtimeTransform>();
@@ -107,7 +108,7 @@ public class Simulation : MonoBehaviour
         GeneratedFoodObjects.Remove(food);
     }
 
-    public GameObject getClosestFoodWithinReach(Vector3 pos, float range)
+    public GameObject getClosestFoodWithinReach(Vector3 pos, float range, string creator)
     {
         GameObject result = null;
         float closestDistance = float.PositiveInfinity;
@@ -117,7 +118,7 @@ public class Simulation : MonoBehaviour
         {
             GameObject go = fi.gameObject;
             float dist = Vector3.Distance(pos, go.transform.position);
-            if (dist < range && dist < closestDistance)
+            if (dist < range && dist < closestDistance && (creator == null || creator == go.GetComponent<FoodItem>().GetCreator()))
             {
                 result = go;
                 closestDistance = dist;
@@ -125,4 +126,24 @@ public class Simulation : MonoBehaviour
         }
         return result;
     }
+
+    //public SimulationModel GetModel()
+    //{
+    //    return model;
+    //}
+
+    //public void AddUser(string username)
+    //{
+    //    if (!model.users.ContainsKey((uint)username.GetHashCode()))
+    //    {
+    //        var newModel = new SimulationUserModel();
+    //        newModel.name = username;
+    //        model.users.Add((uint)username.GetHashCode(), newModel);
+    //    }
+    //}
+
+    //protected override void OnRealtimeModelReplaced(SimulationModel prevModel, SimulationModel newModel)
+    //{
+    //    Debug.Log("Simulation-Model: " + newModel);
+    //}
 }

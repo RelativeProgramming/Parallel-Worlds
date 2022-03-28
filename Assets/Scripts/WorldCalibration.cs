@@ -35,8 +35,8 @@ public class WorldCalibration : MonoBehaviour
 
     private void HandleLog(string message, string stackTrace, LogType type)
     {
-        debugInfoText.text += message + "\n" + stackTrace + "\n";
-        if(debugInfoText.text.Split("\n").Length > 20)
+        debugInfoText.text += type + "::> " + message + "\n" + stackTrace + "\n";
+        if(debugInfoText.text.Split('\n').Length > 20)
         {
             debugInfoText.text = debugInfoText.text.Substring(debugInfoText.text.IndexOf("\n") + 1);
         }

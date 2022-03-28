@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 5994224934380598371}
   - component: {fileID: 5994224934380598396}
   - component: {fileID: 5994224934380598397}
-  - component: {fileID: 5994224934380598398}
+  - component: {fileID: 7680532439319101610}
   m_Layer: 0
   m_Name: User
   m_TagString: Untagged
@@ -31,7 +31,6 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 1, z: 0}
   m_LocalScale: {x: 0.7, y: 1, z: 0.7}
-  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -55,7 +54,6 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
-  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -108,6 +106,8 @@ MonoBehaviour:
   _components:
   - componentID: 1
     component: {fileID: 5994224934380598397}
+  - componentID: 2
+    component: {fileID: 7680532439319101610}
   _childViews: []
 --- !u!114 &5994224934380598397
 MonoBehaviour:
@@ -127,7 +127,7 @@ MonoBehaviour:
   _syncScale: 1
   _syncVelocity: 1
   _maintainOwnershipWhileSleeping: 0
---- !u!114 &5994224934380598398
+--- !u!114 &7680532439319101610
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

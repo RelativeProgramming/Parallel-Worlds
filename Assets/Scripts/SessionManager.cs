@@ -23,7 +23,7 @@ public class SessionManager : MonoBehaviour
         Realtime = GetComponent<Realtime>();
         Realtime.didConnectToRoom += DidConnectToRoom;
         Instance = this;
-        DontDestroyOnLoad(gameObject);
+        //DontDestroyOnLoad(gameObject);
     }
 
     void DidConnectToRoom(Realtime realtime)
@@ -31,24 +31,19 @@ public class SessionManager : MonoBehaviour
         if (IsServer)
         {
             // Instantiate the Simulation once successfully connected to the room
-            var options = Realtime.InstantiateOptions.defaults;
-            options.useInstance = Realtime;
-            GameObject simulationGameObject = Realtime.Instantiate(prefabName: "Simulation",  options: options);
-
-            var simulation = simulationGameObject.GetComponent<Simulation>();
+            GameObject simulationGameObject = InstantiateRealtimePrefab("Simulation");
             SceneManager.LoadScene("ServerScene", LoadSceneMode.Additive);
         } else
         {
-            // Instantiate player avatar
-            var options = Realtime.InstantiateOptions.defaults;
-            options.useInstance = Realtime;
-            GameObject userGameObject = Realtime.Instantiate(prefabName: "User", options: options);
-            userGameObject.GetComponent<MeshRenderer>().enabled = false;
 
-            RealtimeTransform userTransform = userGameObject.GetComponent<RealtimeTransform>();
-            userTransform.RequestOwnership();
-            
+            var acorn = InstantiateRealtimePrefab("Acorn");
+            acorn.GetComponent<FoodItem>().SetCreator("test");
+
+            // Instantiate player avatar
+            GameObject userGameObject = InstantiateRealtimePrefab("User");
+            userGameObject.GetComponent<MeshRenderer>().enabled = false;
             User = userGameObject.GetComponent<User>();
+            User.SetUsername();
 
             SceneManager.LoadScene("ARClientScene", LoadSceneMode.Additive);
         }
@@ -62,7 +57,8 @@ public class SessionManager : MonoBehaviour
         var go = Realtime.Instantiate(prefabName: prefabName, options: options);
 
         RealtimeTransform goTransform = go.GetComponent<RealtimeTransform>();
-        goTransform.RequestOwnership();
+        if(goTransform != null)
+            goTransform.RequestOwnership();
 
         return go;
     }

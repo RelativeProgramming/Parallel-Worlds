@@ -4,73 +4,70 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-namespace Assets.Scripts.Agents
+
+[RequireComponent(typeof(NavMeshAgent))]
+public class SimpleRoamingAgent : MonoBehaviour
 {
+    private NavMeshAgent Agent;
+    private RealtimeView RealtimeView;
 
-    [RequireComponent(typeof(NavMeshAgent))]
-    public class SimpleRoamingAgent : MonoBehaviour
+    private RaycastHit[] Hits = new RaycastHit[1];
+
+    private void Awake()
     {
-        private NavMeshAgent Agent;
-        private RealtimeView RealtimeView;
+        Agent = GetComponent<NavMeshAgent>();
+        RealtimeView = GetComponent<RealtimeView>();
+    }
 
-        private RaycastHit[] Hits = new RaycastHit[1];
-
-        private void Awake()
+    private void Start()
+    {
+        if (RealtimeView.isOwnedLocallySelf)
         {
-            Agent = GetComponent<NavMeshAgent>();
-            RealtimeView = GetComponent<RealtimeView>();
+            StartCoroutine(Wander());
         }
+    }
 
-        private void Start()
+    private void Update()
+    {
+        if (RealtimeView.isOwnedLocallySelf)
         {
-            if (RealtimeView.isOwnedLocallySelf)
+            if (Input.GetKeyUp(KeyCode.Mouse0))
             {
-                StartCoroutine(Wander());
-            }
-        }
+                Ray ray = ServerCamera.Instance.ScreenPointToRay(Input.mousePosition);
 
-        private void Update()
-        {
-            if (RealtimeView.isOwnedLocallySelf)
-            {
-                if (Input.GetKeyUp(KeyCode.Mouse0))
+                if (Physics.RaycastNonAlloc(ray, Hits) > 0)
                 {
-                    Ray ray = ServerCamera.Instance.ScreenPointToRay(Input.mousePosition);
-
-                    if (Physics.RaycastNonAlloc(ray, Hits) > 0)
-                    {
-                        Agent.SetDestination(Hits[0].point);
-                    }
+                    Agent.SetDestination(Hits[0].point);
                 }
             }
         }
+    }
 
 
-        public float UpdateRate = 0.1f;
+    public float UpdateRate = 0.1f;
 
-        private IEnumerator Wander()
+    private IEnumerator Wander()
+    {
+        WaitForSeconds Wait = new WaitForSeconds(UpdateRate);
+
+        while (true)
         {
-            WaitForSeconds Wait = new WaitForSeconds(UpdateRate);
-
-            while (true)
+            if (!Agent.enabled || !Agent.isOnNavMesh)
             {
-                if (!Agent.enabled || !Agent.isOnNavMesh)
-                {
-                    yield return Wait;
-                }
-                else if (Agent.remainingDistance <= Agent.stoppingDistance)
-                {
-                    Vector2 point = Random.insideUnitCircle * 3;
-                    NavMeshHit hit;
-
-                    if (NavMesh.SamplePosition(Agent.transform.position + new Vector3(point.x, 0, point.y), out hit, 2f, Agent.areaMask))
-                    {
-                        Agent.SetDestination(hit.position);
-                    }
-                }
-
                 yield return Wait;
             }
+            else if (Agent.remainingDistance <= Agent.stoppingDistance)
+            {
+                Vector2 point = Random.insideUnitCircle * 3;
+                NavMeshHit hit;
+
+                if (NavMesh.SamplePosition(Agent.transform.position + new Vector3(point.x, 0, point.y), out hit, 2f, Agent.areaMask))
+                {
+                    Agent.SetDestination(hit.position);
+                }
+            }
+
+            yield return Wait;
         }
     }
 }

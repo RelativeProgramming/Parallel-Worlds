@@ -1,20 +1,12 @@
 using Normal.Realtime;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class User : MonoBehaviour
+public class User : RealtimeComponent<UserModel>
 {
     public Transform Camera;
     public Vector3 cameraOffset;
 
-    private RealtimeView RealtimeView;
     private SessionManager SessionManager;
-
-    private void Awake()
-    {
-        RealtimeView = GetComponent<RealtimeView>();
-    }
 
     private void Start()
     {
@@ -40,11 +32,12 @@ public class User : MonoBehaviour
         var sim = GameObject.FindObjectOfType<Simulation>();
         if(sim != null)
         {
+            // sim.AddUser(SystemInfo.deviceUniqueIdentifier);
             GameObject acorn = SessionManager.InstantiateRealtimePrefab("Acorn");
             acorn.transform.position = transform.position;
             acorn.transform.Rotate(new Vector3(Random.Range(1f, 89f), 0, 0));
             acorn.GetComponent<Rigidbody>().velocity = transform.rotation * Vector3.forward * 5;
-            acorn.GetComponent<FoodItem>().Creator = SessionManager.Realtime.clientID.ToString();
+            acorn.GetComponent<FoodItem>().SetCreator(SystemInfo.deviceUniqueIdentifier);
         } else
         {
             Debug.Log("No simulation object found!");
@@ -59,6 +52,21 @@ public class User : MonoBehaviour
         inputMovement.x = Input.GetAxisRaw("Horizontal") * 6.0f;
         inputMovement.z = Input.GetAxisRaw("Vertical") * 6.0f;
         transform.position += inputMovement * Time.deltaTime;
+    }
+
+    //protected override void OnRealtimeModelReplaced(UserModel prevModel, UserModel newModel)
+    //{
+    //    Debug.Log("User-Model: " + newModel.username);
+    //}
+
+    public void SetUsername()
+    {
+        model.username = SystemInfo.deviceUniqueIdentifier;
+    }
+
+    public string GetUsername()
+    {
+        return model.username;
     }
 
     //private void LateUpdate()

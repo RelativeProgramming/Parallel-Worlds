@@ -142,6 +142,8 @@ MonoBehaviour:
   _components:
   - componentID: 1
     component: {fileID: 1173694328645860466}
+  - componentID: 2
+    component: {fileID: 2554108953659448964}
   _childViews: []
 --- !u!114 &1173694328645860466
 MonoBehaviour:
@@ -173,4 +175,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fafea2f96e2dcfc4aaa8a93e076107fc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Creator: 
