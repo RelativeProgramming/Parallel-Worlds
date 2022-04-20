@@ -118,7 +118,7 @@ public class RoamingAgent : MonoBehaviour // RealtimeComponent<RoamingAgentModel
                 {
                     // Food is in proximity
                     var foodPos = foodItem.transform.position;
-                    if (Vector3.Distance(transform.position, foodPos) < 0.3)
+                    if (Vector3.Distance(transform.position, foodPos) < 0.5)
                     {
                         // Consume Food when close
                         ConsumeFoodItem(foodItem);
@@ -139,6 +139,7 @@ public class RoamingAgent : MonoBehaviour // RealtimeComponent<RoamingAgentModel
                 {
                     if (UserTarget.Length > 0)
                     {
+                        // Follow user
                         var users = GameObject.FindObjectsOfType<User>();
                         foreach (var user in users)
                         {

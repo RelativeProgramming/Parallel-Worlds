@@ -72,8 +72,8 @@ public class Simulation : MonoBehaviour // RealtimeComponent<SimulationModel>
     {
         while(true)
         {
-            //WaitForSeconds Wait = new WaitForSeconds(Random.Range(10f, 20f));
-            WaitForSeconds Wait = new WaitForSeconds(Random.Range(1f, 2f));
+            WaitForSeconds Wait = new WaitForSeconds(Random.Range(5f, 10f));
+            //WaitForSeconds Wait = new WaitForSeconds(Random.Range(0.5f, 1f));
 
             // Delete oldest acorn if object limit is reached
             if (GeneratedFoodObjects.Count >= 20)
